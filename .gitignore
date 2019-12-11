@@ -12,3 +12,4 @@ npm-debug.log
 yarn-error.log
 tests/
 .idea/*
+.DS_Store
