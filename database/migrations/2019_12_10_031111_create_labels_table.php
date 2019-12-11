@@ -17,7 +17,7 @@ class CreateLabelsTable extends Migration
             $table->bigIncrements('id');
 
             $table->string('label_name')->default('')->comment('标签名称');
-            $table->tinyInteger('status')->default('')->comment('是否启用(0: 禁用 | 1: 启用)');
+            $table->tinyInteger('status')->default(0)->comment('是否启用(0: 禁用 | 1: 启用)');
 
             $table->timestamps();
         });

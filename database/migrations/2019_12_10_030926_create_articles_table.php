@@ -18,7 +18,7 @@ class CreateArticlesTable extends Migration
 
             $table->string('title')->default('')->comment('标题');
             $table->string('cover')->default('')->comment('封面图');
-            $table->text('content')->default('')->comment('内容');
+            $table->text('content')->comment('内容');
             $table->integer('user_id')->default(0)->comment('用户ID');
             $table->bigInteger('views_count')->default(0)->comment('浏览量');
             $table->bigInteger('comments_count')->default(0)->comment('评论量');
