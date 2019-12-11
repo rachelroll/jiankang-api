@@ -29,10 +29,16 @@ Route::namespace('Api')->prefix('v1')->group(function () {
     Route::get('/user/captcha', 'UserController@captcha')->name('api.user.captcha');
     Route::post('/user/sms-code', 'UserController@smsCode')->name('api.user.sms-code');
 
-
-
-
-
 });
 
 
+
+Route::group(['namespace' => 'Api'], function () {
+    // 用户相关
+    // 登录
+    Route::post('/user/login', 'UserController@login');
+    // 用户信息
+    Route::get('user/detail', 'UserController@detail');
+    // 手机号验证
+    Route::post('user/phone-register', 'UserController@phoneRegister');
+});

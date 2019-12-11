@@ -11,6 +11,6 @@ class AuthController extends Controller
     public function login()
     {
         $code = request()->get('code');
-        
+
     }
 }
