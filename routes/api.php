@@ -29,6 +29,11 @@ Route::namespace('Api')->prefix('v1')->group(function () {
     Route::get('/user/captcha', 'UserController@captcha')->name('api.user.captcha');
     Route::post('/user/sms-code', 'UserController@smsCode')->name('api.user.sms-code');
 
+
+    Route::middleware(['auth:api'])->group(function () {
+        Route::get('/test', 'TestController@index');
+    });
+
 });
 
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Notifications\VerificationCode;
 use App\User;
 use App\Utils\Utils;
@@ -13,6 +14,7 @@ use Overtrue\EasySms\PhoneNumber;
 
 class UserController extends Controller
 {
+
     // 登录
     public function login(Request $request)
     {
@@ -33,7 +35,14 @@ class UserController extends Controller
         $session_key = $res->session_key;
 
         // 根据 openid 查用户表里是否有这个用户
-        $user_id = optional(User::where('openid', $openid)->first())->id;
+        $user = User::firstOrCreate([
+            'open_id' => $openid,
+        ]);
+
+        $token = $user->createToken('Laravel Password Grant Client')->accessToken;
+
+        return $this->success(['token' => $token]);
+
         if ($user_id) {
             // 把用户 ID 加密生成 token
             $token = md5($user_id, config('salt'));
@@ -42,29 +51,29 @@ class UserController extends Controller
             return [
                 'code' => 0,
                 'data' => [
-                    'token' => $token
-                ]
+                    'token' => $token,
+                ],
             ];
-        }
-        else{
+        } else {
             // 把 session_key 和 openid 存入数据库, 并返回用户 id
-            $id = DB::table('users')->insertGetId(
-                ['session_key' => $session_key,
-                 'openid' => $openid,
-                 'created_at' => now(),
-                 'updated_at' => now()]
-            );
+            $id = DB::table('users')->insertGetId([
+                    'session_key' => $session_key,
+                    'openid'      => $openid,
+                    'created_at'  => now(),
+                    'updated_at'  => now(),
+                ]);
             // 如果用户储存成功
             if ($id) {
                 // 把用户 ID 加密生成 token
                 $token = md5($id, config('salt'));
 
                 Redis::set($token, $id); // 存入 session
+
                 return $token;
-            }else {
+            } else {
                 return [
                     'code' => 202,
-                    'msg' => 'error'
+                    'msg'  => 'error',
                 ];
             }
         }
@@ -78,10 +87,7 @@ class UserController extends Controller
 
         session([$phone => $smscode]);
 
-        Notification::route(
-            EasySmsChannel::class,
-            new PhoneNumber($phone, 86)
-        )->notify(new VerificationCode($smscode));
+        Notification::route(EasySmsChannel::class, new PhoneNumber($phone, 86))->notify(new VerificationCode($smscode));
     }
 
     public function create(Request $request)
