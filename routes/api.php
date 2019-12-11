@@ -16,3 +16,14 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+
+Route::group(['namespace' => 'Api'], function () {
+    // 用户相关
+    // 登录
+    Route::post('/user/login', 'UserController@login');
+    // 用户信息
+    Route::get('user/detail', 'UserController@detail');
+    // 手机号验证
+    Route::post('user/phone-register', 'UserController@phoneRegister');
+});

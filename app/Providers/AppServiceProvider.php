@@ -13,7 +13,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->singleton(\Overtrue\EasySms\EasySms::class, function ($app) {
+            return new \Overtrue\EasySms\EasySms(
+                $app->config['sms']
+            );
+        });
     }
 
     /**
