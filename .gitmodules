@@ -1,0 +1,9 @@
+[submodule "app/Utils"]
+	path = app/Utils
+	url = git@github.com:rossli/utils.git
+[submodule "app/Models"]
+	path = app/Models
+	url = git@github.com:rachelroll/jiankang-models.git
+[submodule "database"]
+	path = database
+	url = git@github.com:rachelroll/jiankang-database.git
