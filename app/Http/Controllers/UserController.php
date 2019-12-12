@@ -70,10 +70,10 @@ class UserController extends Controller
         }
     }
 
-    // 手机号注册
-    public function phoneRegister(Request $request)
+    // 手机号绑定
+    public function phoneRegister()
     {
-        $phone = $request->phone;
+        $phone = request('phone');
         $smscode = rand(1000, 9999);
 
         session([$phone => $smscode]);
