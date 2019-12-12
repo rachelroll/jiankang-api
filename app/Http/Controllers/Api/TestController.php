@@ -13,4 +13,11 @@ class TestController extends BaseController
         $user = request()->user();
         dd($user);
     }
+
+    public function test()
+    {
+        return $this->success();
+    }
 }
+
+

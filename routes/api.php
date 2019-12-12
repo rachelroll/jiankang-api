@@ -34,6 +34,8 @@ Route::namespace('Api')->prefix('v1')->group(function () {
         Route::get('/test', 'TestController@index');
     });
 
+    Route::get('/test/test', 'TestController@test');
+
 });
 
 
