@@ -12,38 +12,19 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
 Route::namespace('Api')->prefix('v1')->group(function () {
-    //注册用户
-    Route::post('/auth/register', 'AuthController@register')->name('api.auth.register');
+    // 通过微信注册登录
     Route::post('/auth/login', 'AuthController@login')->name('api.auth.login');
-    Route::post('/auth/reset', 'AuthController@reset')->name('api.auth.reset');
-    Route::post('/auth/sms-login', 'AuthController@smsLogin')->name('api.auth.sms-login');
-
-    Route::get('/user/exists', 'UserController@exists')->name('api.user.check-mobile');
-    //验证码
-    Route::get('/user/captcha', 'UserController@captcha')->name('api.user.captcha');
-    Route::post('/user/sms-code', 'UserController@smsCode')->name('api.user.sms-code');
-
 
     Route::middleware(['auth:api'])->group(function () {
         Route::get('/test', 'TestController@index');
+
+        // 手机号验证码
+        Route::post('user/sms-code', 'UserController@smsCode')->name('api.user.sms-code');
+        // 绑定手机号
+        Route::post('user/phone-bind', 'UserController@phoneBind')->name('api.user.phone-bind');
+        // 保存用户信息
+        Route::post('user/user-info-store', 'UserController@userInfoStore')->name('api.user.user-info-store');
+
     });
-
-});
-
-
-
-Route::group(['namespace' => 'Api'], function () {
-    // 用户相关
-    // 登录
-    Route::post('/user/login', 'UserController@login');
-    // 用户信息
-    Route::get('user/detail', 'UserController@detail');
-    // 手机号验证
-    Route::post('user/phone-register', 'UserController@phoneRegister');
 });
